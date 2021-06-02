@@ -4,12 +4,55 @@ server:
 spring:
   application:
     name: user-service
+  #  zipkin:
+  #    base-url: http://127.0.0.1:9411
+  #    enabled: true
+  #  sleuth:
+  #    sampler:
+  #      probability: 1.0
+
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+      path: /h2-console
+#  datasource:
+#    driver-class-name: org.h2.Driver
+#    url: jdbc:h2:mem:testdb
+#    username: sa
+#    password: 1234
 
 eureka:
   instance:
-    instance-id: ${spring.cloud.client.hostname}:${spring.application.instance_id:${random.value}}
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
   client:
-    register-with-eureka: true # Eureka server에 등록할 것이다.
-    fetch-registry: true # 외부 디스커버리에 검색을 가능
-    service-url: # 서버의 위치가 어딘지 항목을 지정
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
       defaultZone: http://127.0.0.1:8761/eureka
+
+greeting:
+  message: Welcome to the Simple E-commerce.
+
+logging:
+  level:
+    com.example.userservice.client: DEBUG
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh, health, beans, busrefresh, info, metrics, prometheus
+
+gateway:
+  ip: 192.168.170.160
+
+token:
+  expiration_time: 86400000
+  secret: user_token
